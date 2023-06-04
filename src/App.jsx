@@ -27,13 +27,13 @@ function App() {
         setLoading(false)
       })
   }, [])
-  useEffect(()=>{
+  useEffect(() => {
     setLoading(true)
-    const searchedList = list?.filter(e=>(e.Title?.toLowerCase().includes(searchString?.toLowerCase())))
-    console.log({searchedList, list});
+    const searchedList = list?.filter(e => (e.Title?.toLowerCase().includes(searchString?.toLowerCase())))
+    console.log({ searchedList, list });
     setSearchedList(searchedList)
     setLoading(false)
-  },[searchString])
+  }, [searchString])
 
 
   return (
@@ -45,40 +45,44 @@ function App() {
         <input
           type="text"
           value={searchString}
-          onChange={(e) => { setSearchString(e.target.value) }} 
-          className="searchBox" 
-          placeholder='Search Here'/>
+          onChange={(e) => { setSearchString(e.target.value) }}
+          className="searchBox"
+          placeholder='Search Here' />
       </div>
-        
+
       <p className={`searchedString ${searchString.length > 0 ? "show" : "hide"}`}>Search results for <span style={{ borderBottom: '1px solid rgba(255, 255,255, 0.5)' }}>{searchString}</span></p>
       <div className="container">
-        {
-          !loading ? (
-            searchString.length === 0 ? list.map((item, index) => {
-              return (
-                <div className="column">
-                  <Card
-                    Title={item.Title}
-                    Released={item.Released}
-                    imdbRating={item.imdbRating}
-                    Poster={item.Images[0]}
-                  />
-                </div>
-              )
-            }) : searchedList.map((item, index) => {
-              return (
-                <div className="column">
-                  <Card
-                    Title={item.Title}
-                    Released={item.Released}
-                    imdbRating={item.imdbRating}
-                    Poster={item.Images[0]}
-                  />
-                </div>
-              )
-            }) 
-          ) : <h3 style={{textAlign: 'center', marginTop: '4rem'}}>Loading...</h3>
-        }
+        <div className="row">
+
+          {
+            !loading ? (
+              searchString.length === 0 ? list.map((item, index) => {
+                return (
+                  <div className="col-lg-4 col-md-6 mb-3">
+                    <Card
+                      Title={item.Title}
+                      Released={item.Released}
+                      imdbRating={item.imdbRating}
+                      Poster={item.Images[0]}
+                    />
+                  </div>
+                )
+              }) : searchedList.map((item, index) => {
+                return (
+                  <div className="col-lg-4 col-md-6 mb-3">
+                    <Card
+                      Title={item.Title}
+                      Released={item.Released}
+                      imdbRating={item.imdbRating}
+                      Poster={item.Images[0]}
+                    />
+                  </div>
+                )
+              })
+            ) : <h3 style={{ textAlign: 'center', marginTop: '4rem' }}>Loading...</h3>
+          }
+        </div>
+
       </div>
     </>
   )
