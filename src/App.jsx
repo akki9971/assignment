@@ -58,23 +58,25 @@ function App() {
             !loading ? (
               searchString.length === 0 ? list.map((item, index) => {
                 return (
-                  <div className="col-lg-4 col-md-6 mb-3">
+                  <div className="col-lg-4 col-md-6 mb-3" key={index}>
                     <Card
                       Title={item.Title}
                       Released={item.Released}
                       imdbRating={item.imdbRating}
                       Poster={item.Images[0]}
+                      uid={item.uid}
                     />
                   </div>
                 )
               }) : searchedList.map((item, index) => {
                 return (
-                  <div className="col-lg-4 col-md-6 mb-3">
+                  <div className="col-lg-4 col-md-6 mb-3" key={index}>
                     <Card
                       Title={item.Title}
                       Released={item.Released}
                       imdbRating={item.imdbRating}
                       Poster={item.Images[0]}
+                      uid={item.uid}
                     />
                   </div>
                 )

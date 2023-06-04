@@ -1,6 +1,7 @@
 import React from 'react'
+import {Link } from 'react-router-dom'
 
-const Card = ({ Title, Released, imdbRating, Poster }) => {
+const Card = ({ Title, Released, imdbRating, Poster, uid }) => {
 
     const array = Array.apply(null, { length: (parseInt(parseFloat(imdbRating) / 2)) })
     return (
@@ -17,7 +18,7 @@ const Card = ({ Title, Released, imdbRating, Poster }) => {
 
                     }
                 </p>
-                <a href="#" className="btn btn-primary">View Details</a>
+                <Link to={"/movies/"+uid} className="btn btn-danger">View Details</Link>
             </div>
         </div>
     )
