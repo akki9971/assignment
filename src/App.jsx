@@ -7,41 +7,77 @@ import { getMoviesList } from './apiClient'
 
 function App() {
   const [list, setList] = useState([])
+  const [searchedList, setSearchedList] = useState([])
   const [searchString, setSearchString] = useState('')
+  const [loading, setLoading] = useState(false)
   const [error, setErrors] = useState(null)
-  
 
-  useEffect(()=>{
+
+  useEffect(() => {
+    setLoading(true)
     getMoviesList()
-      .then(res=>{
+      .then(res => {
         // console.log(res);
         setList(res);
-
+        setLoading(false)
       })
-      .catch(err=>{
+      .catch(err => {
         console.log(err);
         setErrors(err)
+        setLoading(false)
       })
-  },[])
+  }, [])
+  useEffect(()=>{
+    setLoading(true)
+    const searchedList = list?.filter(e=>(e.Title?.toLowerCase().includes(searchString?.toLowerCase())))
+    console.log({searchedList, list});
+    setSearchedList(searchedList)
+    setLoading(false)
+  },[searchString])
 
 
   return (
     <>
-      <h1 className='border-bottom mb-2'>Movies List of 2022</h1>
+      <h1 className='pageTitle'>Movies List of 2022
+        <span>NETFLIX</span>
+      </h1>
+      <div className="searchBox">
+        <input
+          type="text"
+          value={searchString}
+          onChange={(e) => { setSearchString(e.target.value) }} 
+          className="searchBox" 
+          placeholder='Search Here'/>
+      </div>
+        
+      <p className={`searchedString ${searchString.length > 0 ? "show" : "hide"}`}>Search results for <span style={{ borderBottom: '1px solid rgba(255, 255,255, 0.5)' }}>{searchString}</span></p>
       <div className="container">
         {
-          list.map((item, index) => {
-            return (
-              <div className="column">
-                <Card
-                  Title={item.Title}
-                  Released={item.Released}
-                  imdbRating={item.imdbRating}
-                  Poster={item.Images[0]}
-                />
-              </div>
-            )
-          })
+          !loading ? (
+            searchString.length === 0 ? list.map((item, index) => {
+              return (
+                <div className="column">
+                  <Card
+                    Title={item.Title}
+                    Released={item.Released}
+                    imdbRating={item.imdbRating}
+                    Poster={item.Images[0]}
+                  />
+                </div>
+              )
+            }) : searchedList.map((item, index) => {
+              return (
+                <div className="column">
+                  <Card
+                    Title={item.Title}
+                    Released={item.Released}
+                    imdbRating={item.imdbRating}
+                    Poster={item.Images[0]}
+                  />
+                </div>
+              )
+            }) 
+          ) : <h3 style={{textAlign: 'center', marginTop: '4rem'}}>Loading...</h3>
         }
       </div>
     </>
